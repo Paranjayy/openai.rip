@@ -14,6 +14,29 @@
   --site-header-height: 53px;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --canvas: #212121;
+    --surface: #2f2f2f;
+    --ink: #ececec;
+    --ink-soft: #b4b4b4;
+    --muted: #9b9b9b;
+    --accent: #10a37f;
+    --accent-dark: #1a7f64;
+    --line: #424242;
+    --line-soft: #383838;
+  }
+
+  .brand-logo {
+    filter: invert(1);
+  }
+
+  .social-link img:not([src$=".ico"]) {
+    filter: invert(1);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
