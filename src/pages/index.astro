@@ -6,22 +6,24 @@ import type { TimelineEvent } from "@/data/timeline";
 type TimelineCategory = TimelineEvent["category"];
 
 const categoryStyles = {
-  Legal: "border-[color-mix(in_srgb,var(--accent-dark)_50%,transparent)] text-[color-mix(in_srgb,var(--accent-dark)_60%,transparent)]",
-  Quality: "border-[color-mix(in_srgb,#7a5636_50%,transparent)] text-[color-mix(in_srgb,#7a5636_60%,transparent)]",
-  Reliability: "border-[color-mix(in_srgb,#506047_50%,transparent)] text-[color-mix(in_srgb,#506047_60%,transparent)]",
-  Safety: "border-[color-mix(in_srgb,#7c4636_50%,transparent)] text-[color-mix(in_srgb,#7c4636_60%,transparent)]",
-  Policy: "border-[color-mix(in_srgb,#665744_50%,transparent)] text-[color-mix(in_srgb,#665744_60%,transparent)]",
+  Legal: "border-slate-300 text-slate-700 bg-slate-50",
+  Quality: "border-amber-200 text-amber-700 bg-amber-50",
+  Reliability: "border-red-200 text-red-700 bg-red-50",
+  Safety: "border-purple-200 text-purple-700 bg-purple-50",
+  Policy: "border-blue-200 text-blue-700 bg-blue-50",
 } as const;
 
 const incidentLayerGroups = {
-  Legal: [],
-  Quality: [],
-  Reliability: [],
-  Policy: [],
-  Safety: [],
+  Legal: ["/incident-layers/lawyer.png"],
+  Quality: ["/incident-layers/fire.png"],
+  Reliability: ["/incident-layers/fire.png"],
+  Policy: ["/incident-layers/sam.png"],
+  Safety: ["/incident-layers/fire.png"],
 } satisfies Record<TimelineCategory, string[]>;
 
 const getIncidentLayers = (category: TimelineCategory, index: number) => {
+  // Only show images on a few entries to not overwhelm, e.g. every 3rd or specific ones.
+  if (index % 4 === 0) return incidentLayerGroups[category];
   return [];
 };
 
@@ -87,45 +89,33 @@ const timelineSchema = {
   </head>
   <body>
     <main class="min-h-screen bg-[var(--canvas)]">
-      <header class="site-header">
+      <header class="site-header border-b border-[var(--line-soft)]">
         <div class="header-inner mx-auto flex max-w-[88rem] items-center justify-between">
-          <a href="/" class="brand-link flex items-center" aria-label="openai.rip home">
-            <span class="text-3xl font-bold font-serif text-[var(--ink)] tracking-tight">openai.rip</span>
+          <a href="/" class="brand-link flex items-center gap-2" aria-label="openai.rip home">
+            <img src="/brand/openai-icon.svg" alt="OpenAI Logo" class="h-6 w-6" />
+            <span class="text-2xl font-semibold tracking-tight text-[var(--ink)]" style="font-family: Söhne, 'Inter', sans-serif;">openai.rip</span>
           </a>
           <p class="ui-text affiliate-note inline-flex min-w-0 items-center gap-2 text-[var(--muted)]">
-            <span class="affiliate-note-label text-[0.7rem] font-bold uppercase leading-none tracking-[0.08em] opacity-80">
+            <span class="affiliate-note-label text-xs font-semibold uppercase tracking-wider text-[var(--accent)] opacity-90">
               Not affiliated with OpenAI
             </span>
           </p>
         </div>
       </header>
 
-      <section class="hero-section relative bg-[var(--canvas)]">
-        <div class="hero-shell mx-auto w-full max-w-[88rem] px-6 py-3 sm:px-10 sm:py-4 lg:px-20">
-          <div class="hero-lockup">
-            <div class="hero-copy min-w-0">
-              <h1
-                class="brand-title leading-[0.95] text-[var(--ink)]"
-              >
-                <span class="hero-line-one block">
-                  Everything that <span class="hero-correction">
-                    <span class="hero-struck">went</span>
-                    <span class="hero-insert">is</span>
-                  </span>
-                </span>
-                <span class="block">wrong with OpenAI.</span>
-              </h1>
-            </div>
-            <img
-              src="/brand/openai-icon.svg"
-              alt=""
-              class="hero-pixel-art"
-              width="28"
-              height="28"
-              loading="eager"
-              decoding="async"
-              aria-hidden="true"
-            />
+      <section class="hero-section relative bg-[var(--canvas)] py-20 lg:py-32">
+        <div class="mx-auto w-full max-w-[88rem] px-6 sm:px-10 lg:px-20">
+          <div class="max-w-4xl">
+            <h1 class="brand-title leading-[1.05] text-[var(--ink)] tracking-tight">
+              <span class="block mb-2">Everything that</span>
+              <span class="block">
+                <span class="text-[var(--muted)] line-through decoration-[var(--accent)] decoration-[0.1em]">went</span>
+                <span class="text-[var(--ink)] ml-2">is</span> wrong with OpenAI.
+              </span>
+            </h1>
+            <p class="ui-text mt-8 max-w-2xl text-xl sm:text-2xl leading-relaxed text-[var(--ink-soft)]">
+              A comprehensive, satirical timeline tracking the boardroom coups, copyright lawsuits, server meltdowns, and the gradual shift away from "open" AI.
+            </p>
           </div>
         </div>
       </section>
@@ -252,37 +242,33 @@ const timelineSchema = {
         </div>
       </section>
 
-      <section class="closing-section bg-[var(--surface)]">
-        <div class="mx-auto flex w-full max-w-[88rem] flex-col items-center px-6 pb-2 pt-0 sm:px-10 sm:pb-3 lg:px-20">
-          <figure class="closing-frame" aria-labelledby="closing-caption">
-            <svg
-              class="closing-handwriting-top"
-              viewBox="0 0 1200 150"
-              role="img"
-              aria-labelledby="closing-caption"
-            >
-              <title id="closing-caption">And remember kids... Don't Be Like OpenAI.</title>
-              <path id="closing-line-one" d="M318 128 Q600 38 882 128" fill="none"></path>
-              <text class="closing-handwriting-small">
-                <textPath href="#closing-line-one" startOffset="50%" text-anchor="middle">
-                  And remember kids...
-                </textPath>
-              </text>
-            </svg>
+      <section class="closing-section bg-[var(--surface)] py-20 border-t border-[var(--line-soft)]">
+        <div class="mx-auto flex w-full max-w-3xl flex-col px-6 sm:px-10">
+          
+          <div class="flex gap-4 mb-8">
+            <div class="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center font-semibold text-sm">
+              U
+            </div>
+            <div class="pt-1">
+              <p class="ui-text text-[var(--ink)] font-medium">What happens when you transition from a non-profit to a capped-profit and take billions from Microsoft?</p>
+            </div>
+          </div>
 
-            <svg
-              class="closing-handwriting-bottom"
-              viewBox="0 0 1200 190"
-              aria-hidden="true"
-            >
-              <path id="closing-line-two" d="M210 48 Q600 158 990 48" fill="none"></path>
-              <text class="closing-handwriting-large">
-                <textPath href="#closing-line-two" startOffset="50%" text-anchor="middle">
-                  Don't Be Like OpenAI.
-                </textPath>
-              </text>
-            </svg>
-          </figure>
+          <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-[#10a37f] flex-shrink-0 flex items-center justify-center">
+              <img src="/brand/openai-icon.svg" class="w-5 h-5 invert brightness-0" alt="ChatGPT" />
+            </div>
+            <div class="pt-1">
+              <p class="ui-text text-[var(--ink)] leading-relaxed">
+                As an AI language model, I cannot provide opinions on corporate governance. However, I can help you draft a passive-aggressive tweet or write a script for firing your board of directors over Google Meet. Would you like some examples?
+              </p>
+              <div class="mt-4 flex gap-2">
+                <button class="px-3 py-1.5 border border-[var(--line)] rounded-md text-xs font-semibold text-[var(--ink-soft)] hover:bg-white transition-colors cursor-default">Draft a cryptic tweet</button>
+                <button class="px-3 py-1.5 border border-[var(--line)] rounded-md text-xs font-semibold text-[var(--ink-soft)] hover:bg-white transition-colors cursor-default">Generate a lawsuit</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -299,7 +285,7 @@ const timelineSchema = {
               <img
                 src="/source-icons/github.svg"
                 alt=""
-                class="h-5 w-5 invert"
+                class="h-5 w-5"
                 width="20"
                 height="20"
                 aria-hidden="true"
@@ -316,7 +302,7 @@ const timelineSchema = {
               <img
                 src="/source-icons/x.svg"
                 alt=""
-                class="h-5 w-5 invert"
+                class="h-5 w-5"
                 width="20"
                 height="20"
                 aria-hidden="true"
